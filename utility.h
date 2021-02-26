@@ -3,10 +3,10 @@
 
 void open_file(FILE** fp,char* filename);
 
-//void file_parser(FILE *arq, listaAluno l);
-
 void newline_remover(char *s);
 
 void check_newline(char *s);
+
+int verify_date(char *data);
 
 #endif //UTILITY_H_INCLUDED

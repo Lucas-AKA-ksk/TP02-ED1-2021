@@ -3,19 +3,21 @@
 
 typedef int TChave;
 
-
+/*Elemento Aluno*/
 typedef struct
 {
     TChave chave;
     char nome[100], matricula[10],dataNasc[11];
 }Aluno;
 
+/*Elemento Disciplina*/
 typedef struct
 {
     TChave chave;
     char nomeDisciplina [50];
 }Disciplina;
 
+/*Elemento Avaliação*/
 typedef struct
 {
     TChave chave;
@@ -23,12 +25,20 @@ typedef struct
     int valor, nota;
 }Avaliacao;
 
+/*Nodo Avaliação*/
 typedef struct NodoAv
 {
     Avaliacao info;
     struct NodoAv *next, *prior;  
 }TNodoAvaliacao;
 
+/*Lista Avaliação*/
+typedef struct{
+   TNodoAvaliacao *first,*last,*current;
+   int tamanho;
+}TListaAvaliacao;
+
+/*Nodo Disciplina*/
 typedef struct NodoD
 {
     Disciplina info;
@@ -36,6 +46,13 @@ typedef struct NodoD
     /*listaAvaliacao*/ TListaAvaliacao *L_Ava;
 }TNodoDisciplina;
 
+/*Lista Disciplina*/
+typedef struct{
+   TNodoDisciplina *first,*last,*current;
+   int tamanho;
+}TListaDisciplina;
+
+/*Nodo Aluno*/
 typedef struct NodoAl
 {
     Aluno info;
@@ -43,25 +60,17 @@ typedef struct NodoAl
     /*listaDisciplina*/ TListaDisciplina *L_Disc;
 }TNodoAluno;
 
-
+/*Lista Aluno*/
 typedef struct{
    TNodoAluno *first,*last,*current;
    int tamanho;
 }TListaAluno;
 
-typedef struct{
-   TNodoDisciplina *first,*last,*current;
-   int tamanho;
-}TListaDisciplina;
-
-typedef struct{
-   TNodoAvaliacao *first,*last,*current;
-   int tamanho;
-}TListaAvaliacao;
-
 typedef TListaAluno *listaAluno;
 typedef TListaDisciplina *listaDisciplina;
 typedef TListaAvaliacao *listaAvaliacao;
+
+void file_parser(FILE *arq, listaAluno l);
 
 listaAluno criaListaAluno();
 
@@ -81,9 +90,9 @@ int insereInicioDisciplina(listaDisciplina l,Disciplina e);
 
 int insereInicioAvaliacao(listaAvaliacao l,Avaliacao e);
 
-int getElementoAluno(listaAluno l,int posicao,Aluno *e);
+int getElementoAluno(listaAluno l,int posicao,TNodoAluno **e);
 
-int getElementoDisciplina(listaDisciplina l,int posicao,Disciplina *e);
+int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina **e);
 
 int getElementoAvaliacao(listaAvaliacao l,int posicao,Avaliacao *e);
 
@@ -91,11 +100,13 @@ int insereFinalAluno(listaAluno l,Aluno e);
 
 int insereFinalDisciplina(listaDisciplina l,Disciplina e);
 
-int removeElementoAluno(listaAluno l,TChave ch,Aluno *e);
+int insereFinalAvaliacao(listaAvaliacao l,Avaliacao e);
 
-int removeElementoDisciplina(listaDisciplina l,TChave ch,Disciplina *e);
+int removeElementoAluno(listaAluno l,char* matricula);
 
-int removeElementoAvaliacao(listaAvaliacao l,TChave ch,Avaliacao *e);
+int removeElementoDisciplina(listaDisciplina l,char* nomeDisc);
+
+int removeElementoAvaliacao(listaAvaliacao l,char* nomeAva);
 
 int getTamanhoAluno(listaAluno l);
 
@@ -103,4 +114,4 @@ int getTamanhoDisciplina(listaDisciplina l);
 
 int getTamanhoAvaliacao(listaAvaliacao l);
 
-#endif // LISTA_H_INCLUDED
+#endif //LISTA_H_INCLUDED

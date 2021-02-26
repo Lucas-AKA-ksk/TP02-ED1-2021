@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "listaTest.h"
+#include "lista.h"
 
 void file_parser(FILE *arq, listaAluno l)
 {
@@ -78,7 +78,6 @@ void file_parser(FILE *arq, listaAluno l)
 
             else if (c == '#')
             {
-                printf("\n\nFlag Campo: %d\n\n",flagCampo);
                 if (flagCampo<4)
                 {
                     if(flagNodo == 2 && flagCampo == 1)
@@ -267,11 +266,14 @@ int insereInicioAluno(listaAluno l,Aluno e)
 
     if(!p)
         return 0;
-
+    if((p->L_Disc = criaListaDisciplina())==NULL)
+    {
+        return 0;
+    }
     p->info =e;
     p->prior = NULL;
     p->next = l->first;
-    p->L_Disc = criaListaDisciplina();
+    //p->L_Disc = criaListaDisciplina();
     if(l->first)/*verificando se a lista n�o est� vazia*/
         l->first->prior =p;
     else
@@ -289,11 +291,14 @@ int insereInicioDisciplina(listaDisciplina l,Disciplina e)
 
     if(!p)
         return 0;
-
+    if((p->L_Ava = criaListaAvaliacao())==NULL)
+    {
+        return 0;
+    }
     p->info =e;
     p->prior = NULL;
     p->next = l->first;
-    p->L_Ava = criaListaAvaliacao();
+    //p->L_Ava = criaListaAvaliacao();
     if(l->first)/*verificando se a lista n�o est� vazia*/
         l->first->prior =p;
     else
@@ -325,7 +330,7 @@ int insereInicioAvaliacao(listaAvaliacao l,Avaliacao e)
         return 1;
 }
 
-int getElementoAluno(listaAluno l,int posicao,TNodoAluno *e)
+int getElementoAluno(listaAluno l,int posicao,TNodoAluno **e)
 {
     int i;
     TNodoAluno *p;
@@ -338,23 +343,19 @@ int getElementoAluno(listaAluno l,int posicao,TNodoAluno *e)
         p=l->first;
         for(i=1;i<posicao;i++)
             p=p->next;
-        //e->info = p->info;
-        //e->L_Disc = p->L_Disc;
-        e=p;
+        *e = p;
     }
     else{
         /*percorrendo a lista a partir do ultimo nodo*/
         p=l->last;
         for(i=l->tamanho;i>posicao;i--)
             p=p->prior;
-        //e->info = p->info;
-        //e->L_Disc = p->L_Disc;
-        e=p;
+        *e = p;
     }
     return 1;
 }
 
-int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina *e)
+int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina **e)
 {
     int i;
     TNodoDisciplina *p;
@@ -367,16 +368,14 @@ int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina *e)
         p=l->first;
         for(i=1;i<posicao;i++)
             p=p->next;
-        e->info=p->info;
-        e->L_Ava = p->L_Ava;
+        *e = p;
     }
     else{
         /*percorrendo a lista a partir do ultimo nodo*/
         p=l->last;
         for(i=l->tamanho;i>posicao;i--)
             p=p->prior;
-        e->info=p->info;
-        e->L_Ava = p->L_Ava;
+        *e = p;
     }
     return 1;
 }
@@ -416,11 +415,15 @@ int insereFinalAluno(listaAluno l,Aluno e)
 
     if(!p)
         return 0;
-
+    if((p->L_Disc = criaListaDisciplina())==NULL)
+    {
+        free(p); // não sei se precisa
+        return 0;
+    }
     p->info = e;
     p->next = NULL;
     p->prior = l->last;
-    p->L_Disc = criaListaDisciplina();
+    //p->L_Disc = criaListaDisciplina();
     l->last->next = p;
     l->last =p;
     l->tamanho++;
@@ -437,11 +440,15 @@ int insereFinalDisciplina(listaDisciplina l,Disciplina e)
 
     if(!p)
         return 0;
-
+    if((p->L_Ava = criaListaAvaliacao())==NULL)
+    {
+        free(p); // não sei se precisa
+        return 0;
+    }
     p->info = e;
     p->next=NULL;
     p->prior = l->last;
-    p->L_Ava = criaListaAvaliacao();
+    //p->L_Ava = criaListaAvaliacao();
     l->last->next = p;
     l->last =p;
     l->tamanho++;
@@ -468,19 +475,19 @@ int insereFinalAvaliacao(listaAvaliacao l,Avaliacao e)
     return 1;
 }
 
-int removeElementoAluno(listaAluno l,TChave ch,Aluno *e)
+int removeElementoAluno(listaAluno l,char* matricula)
 {
     TNodoAluno *p;
-    p=l->first;
+    p = l->first;
     while(p)
     {
-        if(p->info.chave==ch)
+        if(strcmp(p->info.matricula,matricula)==0)
         {
             if(l->tamanho==1)
             {
                 /*A lista possui um �nico Nodo*/
-                l->first =NULL;
-                l->last=NULL;
+                l->first = NULL;
+                l->last = NULL;
             }
             else
             if(p==l->first)
@@ -502,7 +509,7 @@ int removeElementoAluno(listaAluno l,TChave ch,Aluno *e)
                 p->prior->next = p->next;
                 p->next->prior = p->prior;
             }
-            *e=p->info; //Qual a utilidade disso pra mim??
+            //*e=p->info; //Qual a utilidade disso pra mim??
             terminaListaDisciplina(p->L_Disc);
             free(p);
             l->tamanho--;
@@ -514,13 +521,13 @@ int removeElementoAluno(listaAluno l,TChave ch,Aluno *e)
     return 0;
 }
 
-int removeElementoDisciplina(listaDisciplina l,TChave ch,Disciplina *e)
+int removeElementoDisciplina(listaDisciplina l,char* nomeDisc)
 {
     TNodoDisciplina *p;
     p=l->first;
     while(p)
     {
-        if(p->info.chave==ch)
+        if(strcmp(p->info.nomeDisciplina,nomeDisc)==0)
         {
             if(l->tamanho==1)
             {
@@ -548,7 +555,7 @@ int removeElementoDisciplina(listaDisciplina l,TChave ch,Disciplina *e)
                 p->prior->next = p->next;
                 p->next->prior = p->prior;
             }
-            *e=p->info;
+            //*e=p->info;
             terminaListaAvaliacao(p->L_Ava);
             free(p);
             l->tamanho--;
@@ -560,13 +567,13 @@ int removeElementoDisciplina(listaDisciplina l,TChave ch,Disciplina *e)
     return 0;
 }
 
-int removeElementoAvaliacao(listaAvaliacao l,TChave ch,Avaliacao *e)
+int removeElementoAvaliacao(listaAvaliacao l,char* nomeAva)
 {
     TNodoAvaliacao *p;
     p=l->first;
     while(p)
     {
-        if(p->info.chave==ch)
+        if(strcmp(p->info.nomeAvaliacao,nomeAva))
         {
             if(l->tamanho==1)
             {
@@ -594,7 +601,7 @@ int removeElementoAvaliacao(listaAvaliacao l,TChave ch,Avaliacao *e)
                 p->prior->next = p->next;
                 p->next->prior = p->prior;
             }
-            *e=p->info;
+            //*e=p->info;
             free(p);
             l->tamanho--;
             return 1;
