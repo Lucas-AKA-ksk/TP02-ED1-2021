@@ -226,7 +226,7 @@ int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina **e)
     return 1;
 }
 
-int getElementoAvaliacao(listaAvaliacao l,int posicao,Avaliacao *e)
+int getElementoAvaliacao(listaAvaliacao l,int posicao,TNodoAvaliacao **e)
 {
     int i;
     TNodoAvaliacao *p;
@@ -239,14 +239,14 @@ int getElementoAvaliacao(listaAvaliacao l,int posicao,Avaliacao *e)
         p=l->first;
         for(i=1;i<posicao;i++)
             p=p->next;
-        *e=p->info;
+        *e = p;
     }
     else{
         /*percorrendo a lista a partir do ultimo nodo*/
         p=l->last;
         for(i=l->tamanho;i>posicao;i--)
             p=p->prior;
-        *e=p->info;
+        *e = p;
     }
     return 1;
 }

@@ -35,6 +35,8 @@ void excluirDisciplina(listaAluno l);
 
 void excluirAvaliacao(listaAluno l);
 
+void alterarNota(listaAluno l);
+
 int pesquisaMatricula(listaAluno l,char* matricula); // mudar de header??
 
 int pesquisaDisciplina(listaDisciplina l,char* nome); //mudar de header??

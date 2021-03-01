@@ -157,7 +157,7 @@ void menu(FILE* arq, listaAluno l)
             break;
 
         case 4:
-            /* code */
+            alterarNota(l);
             break;
 
         case 5:

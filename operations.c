@@ -603,6 +603,68 @@ void excluirAvaliacao(listaAluno l)
     
 }
 
+void alterarNota(listaAluno l)
+{
+    int sair, posicaoA, posicaoD, posicaoAv;
+    Aluno a;
+    Disciplina d;
+    Avaliacao av;
+    TNodoAluno *nA;
+    TNodoDisciplina *nD;
+    TNodoAvaliacao *nAv;
+
+    do
+    {
+        printf("\nDigite a MATRICULA do Aluno ao qual deseja alterar a nota de uma avaliação: ");
+        fgets(a.matricula,sizeof(a.matricula),stdin);
+        check_newline(a.matricula);
+        
+        posicaoA = (pesquisaMatricula(l,a.matricula));
+
+        if (posicaoA!=0)
+        {
+            getElementoAluno(l,posicaoA,&nA);
+
+            printf("\nDigite o NOME da disciplina da avaliacao: ");
+            fgets(d.nomeDisciplina,sizeof(d.nomeDisciplina),stdin);
+            check_newline(d.nomeDisciplina);
+
+            posicaoD = pesquisaDisciplina(nA->L_Disc,d.nomeDisciplina);
+
+            if (posicaoD!=0)
+            {
+                getElementoDisciplina(nA->L_Disc,posicaoD,&nD);
+
+                printf("\nDigite o NOME da avaliação: ");
+                fgets(av.nomeAvaliacao,sizeof(av.nomeAvaliacao),stdin);
+                check_newline(av.nomeAvaliacao);
+
+                posicaoAv = pesquisaAvaliacao(nD->L_Ava,av.nomeAvaliacao);
+
+                if (posicaoAv!=0)
+                {
+                    getElementoAvaliacao(nD->L_Ava,posicaoAv,&nAv);
+                    printf("\nDigite a nova nota: ");
+                    scanf("%d",&nAv->info.nota);
+                    setbuf(stdin,NULL);
+                    printf("\nNota Alterada com sucesso.");
+                }
+                else
+                    printf("\nA avaliação \"%s\" não corresponde a nenhuma avaliação cadastrada...",av.nomeAvaliacao);
+                
+            }
+            else
+                printf("\nDisciplina fornecida não está cadastrada no aluno %s...",nA->info.nome);
+            
+        }
+        else
+            printf("\nA Matricula \"%s\" não corresponde a nenhum cadastro...",a.matricula);
+        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        scanf("%d",&sair);
+        setbuf(stdin,NULL);
+    } while (sair!=2);  
+}
+
 int pesquisaMatricula(listaAluno l,char* matricula)
 {
     int pos;

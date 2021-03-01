@@ -94,7 +94,7 @@ int getElementoAluno(listaAluno l,int posicao,TNodoAluno **e);
 
 int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina **e);
 
-int getElementoAvaliacao(listaAvaliacao l,int posicao,Avaliacao *e);
+int getElementoAvaliacao(listaAvaliacao l,int posicao,TNodoAvaliacao **e);
 
 int insereFinalAluno(listaAluno l,Aluno e);
 
