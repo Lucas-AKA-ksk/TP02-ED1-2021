@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utility.h"
-#include "lista.h"
 
 /* Abre um arquivo existente para edição ou cria um arquivo caso não exista */
 void open_file(FILE** fp,char* filename)

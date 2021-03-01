@@ -104,15 +104,11 @@ void menu(FILE* arq, listaAluno l)
                     break;
                 
                 case 1:
-                    /* code */
+                    consultaMatricula(l);
                     break;
 
                 case 2:
-                    /* code */
-                    break;
-
-                case 3:
-                    /* code */
+                    consultaPrefixo(l);
                     break;
 
                 default:
@@ -165,7 +161,10 @@ void menu(FILE* arq, listaAluno l)
             break;
 
         case 5:
-            /* code */
+            if(integrity_check(l))
+                printf("\nNenhum erro de integridade encontrado.");
+            else
+                printf("\nErros de integridade encontrados.");
             break;
 
         case 6:
@@ -173,7 +172,7 @@ void menu(FILE* arq, listaAluno l)
             break;
 
         case 7:
-            /* code */
+            save_to_file(arq,l);
             break;
 
         default:

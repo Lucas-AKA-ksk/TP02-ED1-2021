@@ -5,6 +5,258 @@
 #include "operations.h"
 #include "utility.h"
 
+void file_parser(FILE *arq, listaAluno l)
+{
+    int c, flagCampo = 1, flagNodo = 1;
+    char buf[2], valorTmp[4], notaTmp[4], *endPtr;
+    Aluno eAl;
+    Disciplina eDisc;
+    Avaliacao eAv;
+
+    eAl.matricula[0]='\0';
+    eAl.nome[0]='\0';
+    eAl.dataNasc[0]='\0';
+    eDisc.nomeDisciplina[0]='\0';
+    eAv.nomeAvaliacao[0]='\0';
+    valorTmp[0] = '\0';
+    notaTmp[0] = '\0';
+    
+    fseek(arq,0,SEEK_END);
+    if(ftell(arq)!=0)
+    {
+        fseek(arq,0,SEEK_SET);
+        while ((c = fgetc(arq)) != EOF)
+        {
+            //printf("\nfgetc loop %c",c); //teste (apagar antes de entregar)
+            if (c == '\n')
+            {  
+                if(flagNodo == 2 && flagCampo == 4)
+                {
+                    /* converter e armazenar valor e nota */
+                    eAv.valor = strtol(valorTmp,&endPtr,10);
+                    eAv.nota = strtol(notaTmp,&endPtr,10);
+                    /* Inserir os dados */
+                    insereFinalAvaliacao(l->last->L_Disc->last->L_Ava,eAv);
+                    /* Resetar campos da avaliação */
+                    eAv.nomeAvaliacao[0]='\0';
+                    valorTmp[0] = '\0';
+                    notaTmp[0] = '\0';
+
+                }
+                flagCampo = 1;
+                flagNodo = 1;
+                /* reiniciar campos do aluno aqui */
+                eAl.matricula[0]='\0';
+                eAl.nome[0]='\0';
+                eAl.dataNasc[0]='\0';
+            }
+
+            else if (c == '@')
+            {
+                if(flagNodo == 1)
+                {
+                    /* inserir aluno na lista */
+                    insereFinalAluno(l,eAl);
+                    flagNodo = 2;
+                    flagCampo = 1;
+                }
+                    
+                else if(flagNodo == 2)
+                {
+                    /* converter e armazenar valor e nota */
+                    eAv.valor = strtol(valorTmp,&endPtr,10);
+                    eAv.nota = strtol(notaTmp,&endPtr,10);
+                    /* Inserir Avaliação na lista*/
+                    insereFinalAvaliacao(l->last->L_Disc->last->L_Ava,eAv);
+                    /* Resetar campos da avaliação */
+                    eAv.nomeAvaliacao[0]='\0';
+                    valorTmp[0] = '\0';
+                    notaTmp[0] = '\0';
+                    /* resetar Campos da Disc */
+                    eDisc.nomeDisciplina[0]='\0';
+                    flagCampo = 1;
+                } 
+            }
+
+            else if (c == '#')
+            {
+                if (flagCampo<4)
+                {
+                    if(flagNodo == 2 && flagCampo == 1)
+                    {
+                        /* inserir Disc na lista */
+                        insereFinalDisciplina(l->last->L_Disc,eDisc);
+                        /* resetar Campos da Disc */
+                        eDisc.nomeDisciplina[0]='\0';
+                    }
+                        
+                    flagCampo++;
+                }
+                    
+                else
+                {
+                    /* converter e armazenar valor e nota */
+                    eAv.valor = strtol(valorTmp,&endPtr,10);
+                    eAv.nota = strtol(notaTmp,&endPtr,10);
+                    /* Inserir Avaliação aqui?? */
+                    insereFinalAvaliacao(l->last->L_Disc->last->L_Ava,eAv);
+                    /* Resetar campos da avaliação aqui?? */
+                    valorTmp[0] = '\0';
+                    notaTmp[0] = '\0';
+                    eAv.nomeAvaliacao[0]='\0';
+                    flagCampo = 2;
+                }
+            }
+
+            else
+            {
+                if (flagNodo ==1 && flagCampo == 1)
+                {
+                    buf[0] = c;
+                    buf[1] = '\0';
+                    strcat(eAl.matricula,buf);
+                }
+                else if (flagNodo ==1 && flagCampo == 2)
+                {
+                    buf[0] = c;
+                    buf[1] = '\0';
+                    strcat(eAl.nome,buf);
+                }
+                else if (flagNodo ==1 && flagCampo == 3)
+                {
+                    buf[0] = c;
+                    buf[1] = '\0';
+                    strcat(eAl.dataNasc,buf);
+                }
+                else if (flagNodo ==2 && flagCampo == 1)
+                {
+                    buf[0] = c;
+                    buf[1] = '\0';
+                    strcat(eDisc.nomeDisciplina,buf);
+                }
+                else if (flagNodo ==2 && flagCampo == 2)
+                {
+                    buf[0] = c;
+                    buf[1] = '\0';
+                    strcat(eAv.nomeAvaliacao,buf);
+                }
+                else if (flagNodo ==2 && flagCampo == 3)
+                {
+                    buf[0] = c;
+                    buf[1] = '\0';
+                    strcat(valorTmp,buf);
+                }
+                else if (flagNodo ==2 && flagCampo == 4)
+                {
+                    buf[0] = c;
+                    buf[1] = '\0';
+                    strcat(notaTmp,buf);
+                }
+            }
+        }
+    }
+    else
+        printf("\nArquivo vazio...");
+}
+
+int integrity_check(listaAluno l)
+{
+    TNodoAluno *nA;
+    if(l->tamanho > 0)
+    {
+        nA = l->first;
+        while (nA)
+        {
+            if (!integrity_check_discp(nA->L_Disc))
+                return 0;
+            nA = nA->next;
+        }
+        return 1;
+    }
+    else
+        printf("\nLista vazia...");
+    return 0;
+}
+
+int integrity_check_discp(listaDisciplina l)
+{
+    TNodoDisciplina *nD;
+    if (l->tamanho > 0)
+    {
+        nD = l->first;
+        while(nD)
+        {
+            if(!integrity_check_aval(nD->L_Ava))
+                return 0;
+            nD = nD->next;
+        }
+        return 1;
+    }
+    else
+        return 0;
+}
+
+int integrity_check_aval(listaAvaliacao l)
+{
+    TNodoAvaliacao *nAv;
+    int soma = 0;
+    if(l->tamanho > 0)
+    {
+        nAv = l->first;
+        while (nAv)
+        {
+            soma += nAv->info.valor;
+            nAv = nAv->next;
+        }
+        if(soma == 100)
+            return 1;
+    }
+    return 0;
+}
+
+void save_to_file(FILE *arq, listaAluno l)
+{
+    TNodoAluno *nA;
+    if (integrity_check(l))
+    {
+        freopen("dados.txt","w+",arq);
+        fseek(arq,0,SEEK_SET);
+        nA = l->first;
+        while (nA)
+        {
+            fprintf(arq,"%s#%s#%s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
+            save_discp_to_file(arq,nA->L_Disc);
+            nA = nA->next;
+            fprintf(arq,"\n");
+        }
+    }
+    else
+        printf("\nNão é possivel salvar uma lista com erros de integridade...");
+}
+
+void save_discp_to_file(FILE *arq,listaDisciplina l)
+{
+    TNodoDisciplina *nD;
+    nD = l->first;
+    while (nD)
+    {
+        fprintf(arq,"@%s",nD->info.nomeDisciplina);
+        save_aval_to_file(arq,nD->L_Ava);
+        nD = nD->next;
+    }
+}
+
+void save_aval_to_file(FILE *arq,listaAvaliacao l)
+{
+    TNodoAvaliacao *nAv;
+    nAv = l->first;
+    while (nAv)
+    {
+        fprintf(arq,"#%s#%d#%d",nAv->info.nomeAvaliacao,nAv->info.valor,nAv->info.nota);
+        nAv = nAv->next;
+    }
+}
+
 void cadastroAluno(listaAluno l)
 {
     Aluno a;
@@ -139,6 +391,97 @@ void cadastroAvaliacao(listaAluno l)
     } while (sair!=2);
 }
 
+void consultaMatricula(listaAluno l)
+{
+    int sair, posicao;
+    char matricula[10];
+    TNodoAluno *nA;
+    do
+    {
+        printf("\nDigite a MATRICULA do aluno a ser consultado: ");
+        fgets(matricula,sizeof(matricula),stdin);
+        check_newline(matricula);
+
+        posicao = pesquisaMatricula(l,matricula);
+
+        if (posicao!=0)
+        {
+            getElementoAluno(l,posicao,&nA);
+            printf("\n##########~ Dados do aluno ~##########");
+            printf("\n####~ Matricula: %s\n####~ Nome: %s\n####~ Data de Nasc. : %s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
+            listarDisc(nA->L_Disc);
+        }
+        else
+            printf("\nA matricula fornecida não corresponde a nenhum cadastro.");
+        
+        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        scanf("%d",&sair);
+        setbuf(stdin,NULL);
+    } while (sair!=2);
+    
+}
+
+void consultaPrefixo(listaAluno l)
+{
+    int sair, matches;
+    char prefixo[4];
+    TNodoAluno *nA;
+    do
+    {
+        matches = 0;
+        printf("\nDigite o PREFIXO do nome a ser consultado: ");
+        fgets(prefixo,sizeof(prefixo),stdin);
+        check_newline(prefixo);
+
+        nA = l->first;
+        while (nA)
+        {
+            if (strncmp(nA->info.nome,prefixo,3)==0)
+            {
+                //getElementoAluno(l,posicao,&nA);
+                printf("\n##########~ Dados do aluno ~##########");
+                printf("\n####~ Matricula: %s\n####~ Nome: %s\n####~ Data de Nasc. : %s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
+                listarDisc(nA->L_Disc);
+                matches++;
+            }
+            nA = nA->next;
+        }
+        printf("\nForam encontrados %d matches para o prefixo fornecido",matches);
+        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        scanf("%d",&sair);
+        setbuf(stdin,NULL);
+    } while (sair!=2);
+    
+}
+
+void listarDisc(listaDisciplina l)
+{
+    TNodoDisciplina *nD;
+
+    nD = l->first;
+    printf("\n\n##########~ Disciplinas cursadas ~##########");
+    while(nD)
+    {
+        printf("\n####~ Nome da Disc.: %s",nD->info.nomeDisciplina);
+        listarAval(nD->L_Ava);
+        nD = nD->next;
+    }
+}
+
+void listarAval(listaAvaliacao l)
+{
+    TNodoAvaliacao *nAv;
+
+    nAv = l->first;
+    printf("\n\n######~ Avaliações da Disciplina ~######");
+    while (nAv)
+    {
+        printf("\n####~ Nome da Aval.: %s\n####~ Valor: %d\n####~ Nota: %d\n",nAv->info.nomeAvaliacao,nAv->info.valor,nAv->info.nota);
+        nAv = nAv->next;
+    }
+    
+}
+
 void excluirAluno(listaAluno l)
 {
     Aluno a;
@@ -260,7 +603,7 @@ void excluirAvaliacao(listaAluno l)
     
 }
 
-int pesquisaMatricula(listaAluno l,char* matricula) // mudar de Header??
+int pesquisaMatricula(listaAluno l,char* matricula)
 {
     int pos;
     TNodoAluno *p;
@@ -283,7 +626,7 @@ int pesquisaMatricula(listaAluno l,char* matricula) // mudar de Header??
     return 0;
 }
 
-int pesquisaDisciplina(listaDisciplina l,char* nome) // mudar de Header??
+int pesquisaDisciplina(listaDisciplina l,char* nome)
 {
     int pos;
     TNodoDisciplina *p;
@@ -306,7 +649,7 @@ int pesquisaDisciplina(listaDisciplina l,char* nome) // mudar de Header??
     return 0;
 }
 
-int pesquisaAvaliacao(listaAvaliacao l,char* nome) //mudar de header??
+int pesquisaAvaliacao(listaAvaliacao l,char* nome)
 {
     int pos;
     TNodoAvaliacao *p;

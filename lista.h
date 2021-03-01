@@ -1,26 +1,26 @@
 #ifndef LISTA_H_INCLUDED
 #define LISTA_H_INCLUDED
 
-typedef int TChave;
+//typedef int TChave;
 
 /*Elemento Aluno*/
 typedef struct
 {
-    TChave chave;
+    //TChave chave;
     char nome[100], matricula[10],dataNasc[11];
 }Aluno;
 
 /*Elemento Disciplina*/
 typedef struct
 {
-    TChave chave;
+    //TChave chave;
     char nomeDisciplina [50];
 }Disciplina;
 
 /*Elemento Avaliação*/
 typedef struct
 {
-    TChave chave;
+    //TChave chave;
     char nomeAvaliacao [50];
     int valor, nota;
 }Avaliacao;
@@ -70,7 +70,7 @@ typedef TListaAluno *listaAluno;
 typedef TListaDisciplina *listaDisciplina;
 typedef TListaAvaliacao *listaAvaliacao;
 
-void file_parser(FILE *arq, listaAluno l);
+//void file_parser(FILE *arq, listaAluno l);
 
 listaAluno criaListaAluno();
 
