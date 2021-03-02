@@ -5,14 +5,24 @@
 #include "operations.h"
 #include "utility.h"
 
+/* Lê as informações salvas em um arquivo e as armazena
+ na lista l de acordo com os characteres separadores (#,@,"\n"),
+ espera-se que o arquivo estaja sem erros na hora da leitura */
 void file_parser(FILE *arq, listaAluno l)
 {
+    /* flagNodo e flagCampo representam em qual campo de qual nodo o char
+    lido por fgetc deve ser concatenado, os caracteres separadores (@,#,"\n")
+    são os responsáveis por inserir os dados lidos e alterar os valores dos
+    flags. */
     int c, flagCampo = 1, flagNodo = 1;
     char buf[2], valorTmp[4], notaTmp[4], *endPtr;
     Aluno eAl;
     Disciplina eDisc;
     Avaliacao eAv;
 
+    /* Colocando nul terminator na primeira posição de modo a "resetar" o campo
+    de modo que a concatenação de cada char lido funcione, feito inicialmente aqui
+    e sempre após inserir os valores em uma lista. */
     eAl.matricula[0]='\0';
     eAl.nome[0]='\0';
     eAl.dataNasc[0]='\0';
@@ -21,13 +31,14 @@ void file_parser(FILE *arq, listaAluno l)
     valorTmp[0] = '\0';
     notaTmp[0] = '\0';
     
+    /* verificando se o arquivo não está vazio */
     fseek(arq,0,SEEK_END);
     if(ftell(arq)!=0)
     {
         fseek(arq,0,SEEK_SET);
+        /* loop fgetc */
         while ((c = fgetc(arq)) != EOF)
         {
-            //printf("\nfgetc loop %c",c); //teste (apagar antes de entregar)
             if (c == '\n')
             {  
                 if(flagNodo == 2 && flagCampo == 4)
@@ -100,7 +111,7 @@ void file_parser(FILE *arq, listaAluno l)
                     eAv.nota = strtol(notaTmp,&endPtr,10);
                     /* Inserir Avaliação aqui?? */
                     insereFinalAvaliacao(l->last->L_Disc->last->L_Ava,eAv);
-                    /* Resetar campos da avaliação aqui?? */
+                    /* Resetar campos da avaliação aqui*/
                     valorTmp[0] = '\0';
                     notaTmp[0] = '\0';
                     eAv.nomeAvaliacao[0]='\0';
@@ -110,43 +121,43 @@ void file_parser(FILE *arq, listaAluno l)
 
             else
             {
-                if (flagNodo ==1 && flagCampo == 1)
+                if (flagNodo ==1 && flagCampo == 1)/* campo matricula */
                 {
                     buf[0] = c;
                     buf[1] = '\0';
                     strcat(eAl.matricula,buf);
                 }
-                else if (flagNodo ==1 && flagCampo == 2)
+                else if (flagNodo ==1 && flagCampo == 2)/*  campo nome ALUNO*/
                 {
                     buf[0] = c;
                     buf[1] = '\0';
                     strcat(eAl.nome,buf);
                 }
-                else if (flagNodo ==1 && flagCampo == 3)
+                else if (flagNodo ==1 && flagCampo == 3)/* campo data de nascimento */
                 {
                     buf[0] = c;
                     buf[1] = '\0';
                     strcat(eAl.dataNasc,buf);
                 }
-                else if (flagNodo ==2 && flagCampo == 1)
+                else if (flagNodo ==2 && flagCampo == 1)/* campo nome DISCIPLINA */
                 {
                     buf[0] = c;
                     buf[1] = '\0';
                     strcat(eDisc.nomeDisciplina,buf);
                 }
-                else if (flagNodo ==2 && flagCampo == 2)
+                else if (flagNodo ==2 && flagCampo == 2)/* campo nome AVALIAÇÃO */
                 {
                     buf[0] = c;
                     buf[1] = '\0';
                     strcat(eAv.nomeAvaliacao,buf);
                 }
-                else if (flagNodo ==2 && flagCampo == 3)
+                else if (flagNodo ==2 && flagCampo == 3)/* campo valor */
                 {
                     buf[0] = c;
                     buf[1] = '\0';
                     strcat(valorTmp,buf);
                 }
-                else if (flagNodo ==2 && flagCampo == 4)
+                else if (flagNodo ==2 && flagCampo == 4)/* campo nota */
                 {
                     buf[0] = c;
                     buf[1] = '\0';
@@ -159,6 +170,8 @@ void file_parser(FILE *arq, listaAluno l)
         printf("\nArquivo vazio...");
 }
 
+/* Caso a lista de Alunos não esteja vazia e cada aluno
+ passe no teste de integridade de suas disciplinas, retorna 1 */
 int integrity_check(listaAluno l)
 {
     TNodoAluno *nA;
@@ -178,6 +191,8 @@ int integrity_check(listaAluno l)
     return 0;
 }
 
+/* Caso a lista de Disciplinas não esteja vazia e nenhuma das
+ disciplinas falhe no teste de integridade de suas avaliações, retorna 1 */
 int integrity_check_discp(listaDisciplina l)
 {
     TNodoDisciplina *nD;
@@ -196,6 +211,8 @@ int integrity_check_discp(listaDisciplina l)
         return 0;
 }
 
+/* Caso a lista de avaliações não esteja vazia e a soma dos
+ valores das avaliações cadastradas seja 100, retorna 1 */
 int integrity_check_aval(listaAvaliacao l)
 {
     TNodoAvaliacao *nAv;
@@ -214,12 +231,21 @@ int integrity_check_aval(listaAvaliacao l)
     return 0;
 }
 
+/* Salva as informações dos Alunos,
+ assim como suas Disciplinas e avaliações no formato especificado */
 void save_to_file(FILE *arq, listaAluno l)
 {
     TNodoAluno *nA;
+    /* Para ser gravada em um arquivo,
+     as informações precisam estar integras */
     if (integrity_check(l))
     {
+        /* Apaga os dados existentes no arquivo,
+         de modo a evitar characteres "leftovers" caso
+         os dados a serem gravados seja de tamanho menor
+         do que os que estavam no arquivo */
         freopen("dados.txt","w+",arq);
+
         fseek(arq,0,SEEK_SET);
         nA = l->first;
         while (nA)
@@ -231,9 +257,10 @@ void save_to_file(FILE *arq, listaAluno l)
         }
     }
     else
-        printf("\nNão é possivel salvar uma lista com erros de integridade...");
+        printf("\nNão é possivel salvar uma lista vazia ou com erros de integridade...");
 }
 
+/* Função auxiliar de save_to_file() que percorre a lista de disciplinas de um aluno para salvar as infos */
 void save_discp_to_file(FILE *arq,listaDisciplina l)
 {
     TNodoDisciplina *nD;
@@ -246,6 +273,7 @@ void save_discp_to_file(FILE *arq,listaDisciplina l)
     }
 }
 
+/* Função auxiliar de save_discp_to_file() que percorre a lista de avaliações de uma disciplina para salvar as infos */
 void save_aval_to_file(FILE *arq,listaAvaliacao l)
 {
     TNodoAvaliacao *nAv;
@@ -316,10 +344,15 @@ void cadastroDisciplina(listaAluno l)
             fgets(d.nomeDisciplina,sizeof(d.nomeDisciplina),stdin);
             check_newline(d.nomeDisciplina);
 
-            if (insereFinalDisciplina(n->L_Disc,d))
-                printf("\nDisciplina cadastrada com com sucesso.");
+            if(pesquisaDisciplina(n->L_Disc,d.nomeDisciplina)==0)
+            {
+                if (insereFinalDisciplina(n->L_Disc,d))
+                    printf("\nDisciplina cadastrada com com sucesso.");
+                else
+                    printf("\nFalha ao cadastrar disciplina...");
+            }
             else
-                printf("\nFalha ao cadastrar disciplina...");
+                printf("\nEsta Disciplina já foi cadastrada para o Aluno %s",n->info.nome);
         }
         else
             printf("\nAluno não cadastrado...");
@@ -391,6 +424,7 @@ void cadastroAvaliacao(listaAluno l)
     } while (sair!=2);
 }
 
+/* Consulta de alunos por matricula */
 void consultaMatricula(listaAluno l)
 {
     int sair, posicao;
@@ -421,6 +455,7 @@ void consultaMatricula(listaAluno l)
     
 }
 
+/* Consulta de alunos por prefixo do nome, percorre a lista de alunos e printa as infos de todos os alunos os quais o prefixo */
 void consultaPrefixo(listaAluno l)
 {
     int sair, matches;
@@ -454,6 +489,8 @@ void consultaPrefixo(listaAluno l)
     
 }
 
+/* Função auxiliar de consultaMatricula() e consultaPrefixo()
+ para printar a lista de disciplinas de um aluno */
 void listarDisc(listaDisciplina l)
 {
     TNodoDisciplina *nD;
@@ -468,6 +505,8 @@ void listarDisc(listaDisciplina l)
     }
 }
 
+/* Função auxiliar de listaDisc() para
+ printar a lista de avaliações de uma Disciplina */
 void listarAval(listaAvaliacao l)
 {
     TNodoAvaliacao *nAv;
@@ -665,6 +704,8 @@ void alterarNota(listaAluno l)
     } while (sair!=2);  
 }
 
+/* Printa os alunos que tenham nota final acima da média
+ em TODAS as disciplinas, assim como a média das notas finais */
 void relatorioAprov(listaAluno l)
 {
     int aprovado, nota;
@@ -689,7 +730,7 @@ void relatorioAprov(listaAluno l)
         if (aprovado)
         {
             media = 0;
-            printf("\n#~ Matricula: %s #~ Nome: %s #~ Data de Nasc.: %s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
+            printf("\n\n#~ Matricula: %s #~ Nome: %s #~ Data de Nasc.: %s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
             nD = nA->L_Disc->first;
             while (nD)
             {
@@ -711,6 +752,8 @@ void relatorioAprov(listaAluno l)
     }
 }
 
+/* Printa os alunos que tenham nota final abaixo da média
+ em PELO MENOS UMA disciplina, assim como a média das notas finais */
 void relatorioReprov(listaAluno l)
 {
     int aprovado, nota;
@@ -735,7 +778,7 @@ void relatorioReprov(listaAluno l)
         if (!aprovado)
         {
             media = 0;
-            printf("\n#~ Matricula: %s #~ Nome: %s #~ Data de Nasc.: %s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
+            printf("\n\n#~ Matricula: %s #~ Nome: %s #~ Data de Nasc.: %s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
             nD = nA->L_Disc->first;
             while (nD)
             {
@@ -757,6 +800,9 @@ void relatorioReprov(listaAluno l)
     }
 }
 
+/* Soma as notas de um aluno nas avaliações de uma disciplina
+ e verifica se estão acima da média estabelecida (60pts) ,
+ função auxiliar de relatorioAprov() e relatorioReprov() */
 int verificaNotas(listaAvaliacao l)
 {
     int soma = 0;
@@ -767,11 +813,13 @@ int verificaNotas(listaAvaliacao l)
         soma += nAv->info.nota;   
         nAv = nAv->next;
     }
-    if(soma>60)
+    if(soma>=60)
         return 1;
     return 0;
 }
 
+/* Pesquisa um aluno através da sua matricula, caso encontre,
+ retorna a posição do mesmo na lista, e caso contrário, retorna 0 */
 int pesquisaMatricula(listaAluno l,char* matricula)
 {
     int pos;
@@ -795,6 +843,8 @@ int pesquisaMatricula(listaAluno l,char* matricula)
     return 0;
 }
 
+/* Pesquisa uma Disciplina através do seu nome, caso encontre,
+ retorna a posição da mesma na lista, e caso contrário, retorna 0 */
 int pesquisaDisciplina(listaDisciplina l,char* nome)
 {
     int pos;
@@ -818,6 +868,8 @@ int pesquisaDisciplina(listaDisciplina l,char* nome)
     return 0;
 }
 
+/* Pesquisa uma Avaliação através do seu nome, caso encontre,
+ retorna a posição da mesma na lista, e caso contrário, retorna 0 */
 int pesquisaAvaliacao(listaAvaliacao l,char* nome)
 {
     int pos;
