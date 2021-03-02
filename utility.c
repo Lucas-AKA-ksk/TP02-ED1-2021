@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "utility.h"
 
 /* Abre um arquivo existente para edição ou cria um arquivo caso não exista */

@@ -255,6 +255,7 @@ void save_to_file(FILE *arq, listaAluno l)
             nA = nA->next;
             fprintf(arq,"\n");
         }
+        printf("\nDados salvod com sucesso.");
     }
     else
         printf("\nNão é possivel salvar uma lista vazia ou com erros de integridade...");
