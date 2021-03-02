@@ -455,7 +455,10 @@ void consultaMatricula(listaAluno l)
     
 }
 
-/* Consulta de alunos por prefixo do nome, percorre a lista de alunos e printa as infos de todos os alunos os quais o prefixo */
+/* Consulta de alunos por prefixo do nome,
+ percorre a lista de alunos e printa as infos
+ de todos os alunos os quais o prefixo do nome corresponda
+ ao fornecido para a busca */
 void consultaPrefixo(listaAluno l)
 {
     int sair, matches;

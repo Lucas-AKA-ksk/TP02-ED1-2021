@@ -27,7 +27,6 @@ int main(void)
 void menu(FILE* arq, listaAluno l)
 {
     int option, subOption;
-
     do
     {
         printf("\n\n##########~ Menu de Operacoes ~##########");
