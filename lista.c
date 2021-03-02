@@ -78,6 +78,9 @@ int insereInicioAluno(listaAluno l,Aluno e)
 
     if(!p)
         return 0;
+    /* Cria uma lista de disciplinas para o aluno,
+     caso não seja possível, libera o espaço alocado
+     para p e retorna 0 */
     if((p->L_Disc = criaListaDisciplina())==NULL)
     {
         free(p);
@@ -96,37 +99,16 @@ int insereInicioAluno(listaAluno l,Aluno e)
         return 1;
 }
 
-/*int insereInicioDisciplina(listaDisciplina l,Disciplina e)
+int insereInicioDisciplina(listaDisciplina l,Disciplina e)
 {
     TNodoDisciplina *p;
     p=(TNodoDisciplina*)malloc(sizeof(TNodoDisciplina));
 
     if(!p)
         return 0;
-    if((p->L_Ava = criaListaAvaliacao())==NULL)
-    {
-        return 0;
-    }
-    p->info =e;
-    p->prior = NULL;
-    p->next = l->first;
-    if(l->first)
-        l->first->prior =p;
-    else
-        l->last =p;
-
-    l->first = p;
-    l->tamanho++;
-    return 1;
-}*/
-
-int insereInicioDisciplina(listaDisciplina l,Disciplina e)/* versão simplesmente encadeada linear */
-{
-    TNodoDisciplina *p;
-    p=(TNodoDisciplina*)malloc(sizeof(TNodoDisciplina));
-
-    if(!p)
-        return 0;
+    /* Cria uma lista de avaliaçõess para a disciplina,
+     caso não seja possível, libera o espaço alocado
+     para p e retorna 0 */
     if((p->L_Ava = criaListaAvaliacao())==NULL)
     {
         free(p);
@@ -141,28 +123,7 @@ int insereInicioDisciplina(listaDisciplina l,Disciplina e)/* versão simplesment
     return 1;
 }
 
-/*int insereInicioAvaliacao(listaAvaliacao l,Avaliacao e)
-{
-    TNodoAvaliacao *p;
-    p=(TNodoAvaliacao*)malloc(sizeof(TNodoAvaliacao));
-
-    if(!p)
-        return 0;
-
-    p->info =e;
-    p->prior = NULL;
-    p->next = l->first;
-    if(l->first)
-        l->first->prior =p;
-    else
-        l->last =p;
-
-    l->first = p;
-    l->tamanho++;
-    return 1;
-}*/
-
-int insereInicioAvaliacao(listaAvaliacao l,Avaliacao e)/* versão simplesmente encadeada linear */
+int insereInicioAvaliacao(listaAvaliacao l,Avaliacao e)
 {
     TNodoAvaliacao *p;
     p=(TNodoAvaliacao*)malloc(sizeof(TNodoAvaliacao));
@@ -188,14 +149,12 @@ int getElementoAluno(listaAluno l,int posicao,TNodoAluno **e)
         return 0;
 
     if(posicao<= l->tamanho/2){
-        /*percorrendo a lista a partir do primeiro nodo*/
         p=l->first;
         for(i=1;i<posicao;i++)
             p=p->next;
         *e = p;
     }
     else{
-        /*percorrendo a lista a partir do ultimo nodo*/
         p=l->last;
         for(i=l->tamanho;i>posicao;i--)
             p=p->prior;
@@ -204,32 +163,7 @@ int getElementoAluno(listaAluno l,int posicao,TNodoAluno **e)
     return 1;
 }
 
-/*int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina **e)
-{
-    int i;
-    TNodoDisciplina *p;
-
-    if(posicao<1 || posicao>l->tamanho)
-        return 0;
-
-    if(posicao<= l->tamanho/2){
-        
-        p=l->first;
-        for(i=1;i<posicao;i++)
-            p=p->next;
-        *e = p;
-    }
-    else{
-        
-        p=l->last;
-        for(i=l->tamanho;i>posicao;i--)
-            p=p->prior;
-        *e = p;
-    }
-    return 1;
-}*/
-
-int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina **e)/* versão simplesmente encadeada linear */
+int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina **e)
 {
     int i;
     TNodoDisciplina *p;
@@ -244,32 +178,7 @@ int getElementoDisciplina(listaDisciplina l,int posicao,TNodoDisciplina **e)/* v
     return 1;
 }
 
-/*int getElementoAvaliacao(listaAvaliacao l,int posicao,TNodoAvaliacao **e)
-{
-    int i;
-    TNodoAvaliacao *p;
-
-    if(posicao<1 || posicao>l->tamanho)
-        return 0;
-
-    if(posicao<= l->tamanho/2){
-        
-        p=l->first;
-        for(i=1;i<posicao;i++)
-            p=p->next;
-        *e = p;
-    }
-    else{
-        
-        p=l->last;
-        for(i=l->tamanho;i>posicao;i--)
-            p=p->prior;
-        *e = p;
-    }
-    return 1;
-}*/
-
-int getElementoAvaliacao(listaAvaliacao l,int posicao,TNodoAvaliacao **e)/* versão simplesmente encadeada linear */
+int getElementoAvaliacao(listaAvaliacao l,int posicao,TNodoAvaliacao **e)
 {
     int i;
     TNodoAvaliacao *p;
@@ -294,6 +203,9 @@ int insereFinalAluno(listaAluno l,Aluno e)
 
     if(!p)
         return 0;
+    /* Cria uma lista de disciplinas para o aluno,
+     caso não seja possível, libera o espaço alocado
+     para p e retorna 0 */
     if((p->L_Disc = criaListaDisciplina())==NULL)
     {
         free(p);
@@ -302,14 +214,13 @@ int insereFinalAluno(listaAluno l,Aluno e)
     p->info = e;
     p->next = NULL;
     p->prior = l->last;
-    //p->L_Disc = criaListaDisciplina();
     l->last->next = p;
     l->last =p;
     l->tamanho++;
     return 1;
 }
 
-/*int insereFinalDisciplina(listaDisciplina l,Disciplina e)
+int insereFinalDisciplina(listaDisciplina l,Disciplina e)
 {
     TNodoDisciplina *p;
     if(l->first==NULL)
@@ -319,33 +230,9 @@ int insereFinalAluno(listaAluno l,Aluno e)
 
     if(!p)
         return 0;
-
-    if((p->L_Ava = criaListaAvaliacao())==NULL)
-    {
-        free(p);
-        return 0;
-    }
-        
-    p->info = e;
-    p->next=NULL;
-    p->prior = l->last;
-    l->last->next = p;
-    l->last =p;
-    l->tamanho++;
-    return 1;
-}*/
-
-int insereFinalDisciplina(listaDisciplina l,Disciplina e)/* versão simplesmente encadeada linear */
-{
-    TNodoDisciplina *p;
-    if(l->first==NULL)
-        return insereInicioDisciplina(l,e);
-
-    p=(TNodoDisciplina*)malloc(sizeof(TNodoDisciplina));
-
-    if(!p)
-        return 0;
-
+    /* Cria uma lista de avaliações para a disciplina,
+     caso não seja possível, libera o espaço alocado
+     para p e retorna 0 */
     if((p->L_Ava = criaListaAvaliacao())==NULL)
     {
         free(p);
@@ -360,7 +247,7 @@ int insereFinalDisciplina(listaDisciplina l,Disciplina e)/* versão simplesmente
     return 1;
 }
 
-/*int insereFinalAvaliacao(listaAvaliacao l,Avaliacao e)
+int insereFinalAvaliacao(listaAvaliacao l,Avaliacao e)
 {
     TNodoAvaliacao *p;
     if(l->first==NULL)
@@ -373,27 +260,6 @@ int insereFinalDisciplina(listaDisciplina l,Disciplina e)/* versão simplesmente
 
     p->info = e;
     p->next=NULL;
-    p->prior = l->last;
-    l->last->next = p;
-    l->last =p;
-    l->tamanho++;
-    return 1;
-}*/
-
-int insereFinalAvaliacao(listaAvaliacao l,Avaliacao e)/* versão simplesmente encadeada linear */
-{
-    TNodoAvaliacao *p;
-    if(l->first==NULL)
-        return insereInicioAvaliacao(l,e);
-
-    p=(TNodoAvaliacao*)malloc(sizeof(TNodoAvaliacao));
-
-    if(!p)
-        return 0;
-
-    p->info = e;
-    p->next=NULL;
-    //p->prior = l->last;
     l->last->next = p;
     l->last =p;
     l->tamanho++;
@@ -410,31 +276,26 @@ int removeElementoAluno(listaAluno l,char* matricula)
         {
             if(l->tamanho==1)
             {
-                /*A lista possui um �nico Nodo*/
                 l->first = NULL;
                 l->last = NULL;
             }
             else
             if(p==l->first)
             {
-                /*removendo o primeiro Lodo da lista*/
                 l->first = l->first->next;
                 l->first->prior = NULL;
             }
             else
             if(p==l->last)
             {
-                /*Removendo o �ltimo Nodo da lista*/
                 l->last = l->last->prior;
                 l->last->next = NULL;
             }
             else
             {
-                /*Removendo um nodo interno � lista*/
                 p->prior->next = p->next;
                 p->next->prior = p->prior;
             }
-            //*e=p->info; //Qual a utilidade disso pra mim??
             terminaListaDisciplina(p->L_Disc);
             free(p);
             l->tamanho--;
@@ -446,52 +307,7 @@ int removeElementoAluno(listaAluno l,char* matricula)
     return 0;
 }
 
-/*int removeElementoDisciplina(listaDisciplina l,char* nomeDisc)
-{
-    TNodoDisciplina *p;
-    p=l->first;
-    while(p)
-    {
-        if(strcmp(p->info.nomeDisciplina,nomeDisc)==0)
-        {
-            if(l->tamanho==1)
-            {
-                //A lista possui um unico Nodo
-                l->first =NULL;
-                l->last=NULL;
-            }
-            else
-            if(p==l->first)
-            {
-                //removendo o primeiro Lodo da lista
-                l->first = l->first->next;
-                l->first->prior = NULL;
-            }
-            else
-            if(p==l->last)
-            {
-                //Removendo o ultimo Nodo da lista
-                l->last = l->last->prior;
-                l->last->next = NULL;
-            }
-            else
-            {
-                //Removendo um nodo interno da lista
-                p->prior->next = p->next;
-                p->next->prior = p->prior;
-            }
-            terminaListaAvaliacao(p->L_Ava);
-            free(p);
-            l->tamanho--;
-            return 1;
-        }
-        else
-            p=p->next;
-    }
-    return 0;
-}*/
-
-int removeElementoDisciplina(listaDisciplina l,char* nomeDisc)/* versão simplesmente encadeada linear */
+int removeElementoDisciplina(listaDisciplina l,char* nomeDisc)
 {
     TNodoDisciplina *p,*ant;
     p=l->first;
@@ -538,51 +354,7 @@ int removeElementoDisciplina(listaDisciplina l,char* nomeDisc)/* versão simples
     return 0;
 }
 
-/*int removeElementoAvaliacao(listaAvaliacao l,char* nomeAva)
-{
-    TNodoAvaliacao *p;
-    p=l->first;
-    while(p)
-    {
-        if(strcmp(p->info.nomeAvaliacao,nomeAva)==0)
-        {
-            if(l->tamanho==1)
-            {
-                //A lista possui um �nico Nodo
-                l->first =NULL;
-                l->last=NULL;
-            }
-            else
-            if(p==l->first)
-            {
-                //removendo o primeiro Lodo da lista
-                l->first = l->first->next;
-                l->first->prior = NULL;
-            }
-            else
-            if(p==l->last)
-            {
-                //Removendo o �ltimo Nodo da lista
-                l->last = l->last->prior;
-                l->last->next = NULL;
-            }
-            else
-            {
-                //Removendo um nodo interno � lista
-                p->prior->next = p->next;
-                p->next->prior = p->prior;
-            }
-            free(p);
-            l->tamanho--;
-            return 1;
-        }
-        else
-            p=p->next;
-    }
-    return 0;
-}*/
-
-int removeElementoAvaliacao(listaAvaliacao l,char* nomeAva)/* versão simplesmente encadeada linear */
+int removeElementoAvaliacao(listaAvaliacao l,char* nomeAva)
 {
     TNodoAvaliacao *p, *ant;
     p=l->first;
@@ -592,26 +364,22 @@ int removeElementoAvaliacao(listaAvaliacao l,char* nomeAva)/* versão simplesmen
         {
             if(l->tamanho==1)
             {
-                //A lista possui um �nico Nodo
                 l->first =NULL;
                 l->last=NULL;
             }
             else
             if(p==l->first)
             {
-                //removendo o primeiro Lodo da lista
                 l->first = l->first->next;
             }
             else
             if(p==l->last)
             {
-                //Removendo o �ltimo Nodo da lista
                 l->last = ant;
                 l->last->next = NULL;
             }
             else
             {
-                //Removendo um nodo interno � lista
                 ant->next=p->next;
             }
             free(p);
