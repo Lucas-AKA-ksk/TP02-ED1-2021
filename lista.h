@@ -6,21 +6,18 @@
 /*Elemento Aluno*/
 typedef struct
 {
-    //TChave chave;
     char nome[100], matricula[10],dataNasc[11];
 }Aluno;
 
 /*Elemento Disciplina*/
 typedef struct
 {
-    //TChave chave;
     char nomeDisciplina [50];
 }Disciplina;
 
 /*Elemento Avaliação*/
 typedef struct
 {
-    //TChave chave;
     char nomeAvaliacao [50];
     int valor, nota;
 }Avaliacao;
@@ -29,12 +26,12 @@ typedef struct
 typedef struct NodoAv
 {
     Avaliacao info;
-    struct NodoAv *next, *prior;  
+    struct NodoAv *next/*, *prior*/;  
 }TNodoAvaliacao;
 
 /*Lista Avaliação*/
 typedef struct{
-   TNodoAvaliacao *first,*last,*current;
+   TNodoAvaliacao *first,*last;
    int tamanho;
 }TListaAvaliacao;
 
@@ -42,13 +39,13 @@ typedef struct{
 typedef struct NodoD
 {
     Disciplina info;
-    struct NodoD *next, *prior;
-    /*listaAvaliacao*/ TListaAvaliacao *L_Ava;
+    struct NodoD *next/*, *prior*/;
+    TListaAvaliacao *L_Ava;
 }TNodoDisciplina;
 
 /*Lista Disciplina*/
 typedef struct{
-   TNodoDisciplina *first,*last,*current;
+   TNodoDisciplina *first,*last;
    int tamanho;
 }TListaDisciplina;
 
@@ -57,20 +54,18 @@ typedef struct NodoAl
 {
     Aluno info;
     struct NodoAl *next, *prior;
-    /*listaDisciplina*/ TListaDisciplina *L_Disc;
+    TListaDisciplina *L_Disc;
 }TNodoAluno;
 
 /*Lista Aluno*/
 typedef struct{
-   TNodoAluno *first,*last,*current;
+   TNodoAluno *first,*last;
    int tamanho;
 }TListaAluno;
 
 typedef TListaAluno *listaAluno;
 typedef TListaDisciplina *listaDisciplina;
 typedef TListaAvaliacao *listaAvaliacao;
-
-//void file_parser(FILE *arq, listaAluno l);
 
 listaAluno criaListaAluno();
 
