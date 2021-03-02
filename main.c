@@ -92,7 +92,7 @@ void menu(FILE* arq, listaAluno l)
             {
                 printf("\n\n############~ Submenu de Consultas ~############");
                 printf("\n###~ 1->Consulta de aluno por Matricula ~#######");
-                printf("\n###~ 1->Consulta de aluno por Prefixo ~#########");
+                printf("\n###~ 2->Consulta de aluno por Prefixo ~#########");
                 printf("\n###~ 0->Retornar ao Menu Principal ~############");
                 printf("\n\nEscolha: ");
                 scanf("%d",&subOption);
@@ -168,7 +168,35 @@ void menu(FILE* arq, listaAluno l)
             break;
 
         case 6:
-            /* code */
+            do
+            {
+                printf("\n\n############~ Submenu de Registros ~############");
+                printf("\n###~ 1->Registro de alunos Aprovados ~##########");
+                printf("\n###~ 2->Registro de alunos Reprovados ~#########");
+                printf("\n###~ 0->Retornar ao Menu Principal ~############");
+                printf("\n\nEscolha: ");
+                scanf("%d",&subOption);
+                setbuf(stdin,NULL);
+
+                switch (subOption)
+                {
+                case 0:
+                    break;
+                
+                case 1:
+                    relatorioAprov(l);
+                    break;
+
+                case 2:
+                    relatorioReprov(l);
+                    break;
+
+                default:
+                    printf("\nDigite um valor valido para relizar uma operação...");
+                    break;
+                }
+
+            } while (subOption!=0);
             break;
 
         case 7:

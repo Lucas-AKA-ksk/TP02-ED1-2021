@@ -665,6 +665,113 @@ void alterarNota(listaAluno l)
     } while (sair!=2);  
 }
 
+void relatorioAprov(listaAluno l)
+{
+    int aprovado, nota;
+    int media;
+    TNodoAluno *nA;
+    TNodoDisciplina *nD;
+    TNodoAvaliacao *nAv;
+    nA = l->first;
+    while (nA)
+    {
+        aprovado = 1;
+        nD = nA->L_Disc->first;
+        while (nD)
+        {
+            if(!verificaNotas(nD->L_Ava))
+            {
+                aprovado = 0;
+                break;
+            }
+            nD = nD->next;
+        }
+        if (aprovado)
+        {
+            media = 0;
+            printf("\n#~ Matricula: %s #~ Nome: %s #~ Data de Nasc.: %s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
+            nD = nA->L_Disc->first;
+            while (nD)
+            {
+                nota = 0;
+                printf("\t\n#~ Disciplina: %s #~ Nota:",nD->info.nomeDisciplina);
+                nAv = nD->L_Ava->first;
+                while(nAv)
+                {
+                    nota += nAv->info.nota;
+                    nAv = nAv->next;
+                }
+                printf("%d",nota);
+                media += nota;
+                nD = nD->next;
+            }
+            printf("\nMédia: %d",media/nA->L_Disc->tamanho);
+        }
+        nA = nA->next;
+    }
+}
+
+void relatorioReprov(listaAluno l)
+{
+    int aprovado, nota;
+    int media;
+    TNodoAluno *nA;
+    TNodoDisciplina *nD;
+    TNodoAvaliacao *nAv;
+    nA = l->first;
+    while (nA)
+    {
+        aprovado = 1;
+        nD = nA->L_Disc->first;
+        while (nD)
+        {
+            if(!verificaNotas(nD->L_Ava))
+            {
+                aprovado = 0;
+                break;
+            }
+            nD = nD->next;
+        }
+        if (!aprovado)
+        {
+            media = 0;
+            printf("\n#~ Matricula: %s #~ Nome: %s #~ Data de Nasc.: %s",nA->info.matricula,nA->info.nome,nA->info.dataNasc);
+            nD = nA->L_Disc->first;
+            while (nD)
+            {
+                nota = 0;
+                printf("\t\n#~ Disciplina: %s #~ Nota:",nD->info.nomeDisciplina);
+                nAv = nD->L_Ava->first;
+                while(nAv)
+                {
+                    nota += nAv->info.nota;
+                    nAv = nAv->next;
+                }
+                printf("%d",nota);
+                media += nota;
+                nD = nD->next;
+            }
+            printf("\nMédia: %d",media/nA->L_Disc->tamanho);
+        }
+        nA = nA->next;
+    }
+}
+
+int verificaNotas(listaAvaliacao l)
+{
+    int soma = 0;
+    TNodoAvaliacao *nAv;
+    nAv = l->first;
+    while(nAv)
+    {
+        soma += nAv->info.nota;   
+        nAv = nAv->next;
+    }
+    if(soma>60)
+        return 1;
+    return 0;
+}
+
 int pesquisaMatricula(listaAluno l,char* matricula)
 {
     int pos;
