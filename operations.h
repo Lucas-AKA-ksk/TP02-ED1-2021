@@ -43,10 +43,10 @@ void relatorioReprov(listaAluno l);
 
 int verificaNotas(listaAvaliacao l);
 
-int pesquisaMatricula(listaAluno l,char* matricula); // mudar de header??
+int pesquisaMatricula(listaAluno l,char* matricula);
 
-int pesquisaDisciplina(listaDisciplina l,char* nome); //mudar de header??
+int pesquisaDisciplina(listaDisciplina l,char* nome);
 
-int pesquisaAvaliacao(listaAvaliacao l,char* nome); //mudar de header??
+int pesquisaAvaliacao(listaAvaliacao l,char* nome);
 
 #endif // OPERATIONS_H_INCLUDED

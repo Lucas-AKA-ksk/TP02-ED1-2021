@@ -294,12 +294,14 @@ void cadastroAluno(listaAluno l)
         printf("\nDigite a MATRICULA do Aluno o qual deseja cadastrar: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
+        format_string(a.matricula);
         
         if (pesquisaMatricula(l,a.matricula)==0)
         {
             printf("\nDigite o NOME do Aluno: ");
             fgets(a.nome,sizeof(a.nome),stdin);
             check_newline(a.nome);
+            format_string(a.nome);
         
             do
             {
@@ -333,6 +335,7 @@ void cadastroDisciplina(listaAluno l)
         printf("\nDigite a MATRICULA do Aluno ao qual deseja CADASTRAR uma disciplina: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
+        format_string(a.matricula);
         
         posicao = (pesquisaMatricula(l,a.matricula));
         
@@ -343,6 +346,7 @@ void cadastroDisciplina(listaAluno l)
             printf("\nDigite o NOME da disciplina: ");
             fgets(d.nomeDisciplina,sizeof(d.nomeDisciplina),stdin);
             check_newline(d.nomeDisciplina);
+            format_string(d.nomeDisciplina);
 
             if(pesquisaDisciplina(n->L_Disc,d.nomeDisciplina)==0)
             {
@@ -377,6 +381,7 @@ void cadastroAvaliacao(listaAluno l)
         printf("\nDigite a MATRICULA do Aluno ao qual deseja CADASTRAR uma avaliacao: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
+        format_string(a.matricula);
         
         posicaoA = (pesquisaMatricula(l,a.matricula));
         
@@ -387,6 +392,7 @@ void cadastroAvaliacao(listaAluno l)
             printf("\nDigite o NOME da disciplina da avaliacao: ");
             fgets(d.nomeDisciplina,sizeof(d.nomeDisciplina),stdin);
             check_newline(d.nomeDisciplina);
+            format_string(d.nomeDisciplina);
 
             posicaoD = pesquisaDisciplina(nA->L_Disc,d.nomeDisciplina);
 
@@ -397,15 +403,17 @@ void cadastroAvaliacao(listaAluno l)
                 printf("\nDigite o NOME da avaliação: ");
                 fgets(av.nomeAvaliacao,sizeof(av.nomeAvaliacao),stdin);
                 check_newline(av.nomeAvaliacao);
+                format_string(av.nomeAvaliacao);
                 printf("\nDigite o VALOR da avaliação: ");
                 scanf("%d",&av.valor);
                 setbuf(stdin,NULL);
-                // bloquear notas maiores que o valor??
-                printf("\nDigite a NOTA do aluno nesta avaliação: ");
-                scanf("%d",&av.nota);
-                setbuf(stdin,NULL);
-
-                /* Verificar o limite de valor de nota aqui */
+                do{
+                    printf("\nDigite a NOTA do aluno nesta avaliação: ");
+                    scanf("%d",&av.nota);
+                    setbuf(stdin,NULL);
+                    if (av.nota>av.valor)
+                        printf("\nA nota do aluno não pode ser maior que o valor da avaliação...");
+                }while (av.nota>av.valor);
 
                 if (insereFinalAvaliacao(nD->L_Ava,av))
                     printf("\nAvaliação cadastrada com com sucesso.");
@@ -435,6 +443,7 @@ void consultaMatricula(listaAluno l)
         printf("\nDigite a MATRICULA do aluno a ser consultado: ");
         fgets(matricula,sizeof(matricula),stdin);
         check_newline(matricula);
+        format_string(matricula);
 
         posicao = pesquisaMatricula(l,matricula);
 
@@ -470,6 +479,7 @@ void consultaPrefixo(listaAluno l)
         printf("\nDigite o PREFIXO do nome a ser consultado: ");
         fgets(prefixo,sizeof(prefixo),stdin);
         check_newline(prefixo);
+        format_string(prefixo);
 
         nA = l->first;
         while (nA)
@@ -533,6 +543,7 @@ void excluirAluno(listaAluno l)
         printf("\nDigite a MATRICULA do Aluno que deseja excluir: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
+        format_string(a.matricula);
 
         if(pesquisaMatricula(l,a.matricula)!=0)
         {
@@ -560,6 +571,7 @@ void excluirDisciplina(listaAluno l)
         printf("\nDigite a MATRICULA do Aluno ao qual deseja EXCLUIR uma disciplina: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
+        format_string(a.matricula);
         
         posicao = (pesquisaMatricula(l,a.matricula));
         
@@ -570,6 +582,7 @@ void excluirDisciplina(listaAluno l)
             printf("\nDigite o NOME da disciplina: ");
             fgets(d.nomeDisciplina,sizeof(d.nomeDisciplina),stdin);
             check_newline(d.nomeDisciplina);
+            format_string(d.nomeDisciplina);
 
             if(pesquisaDisciplina(n->L_Disc,d.nomeDisciplina)!=0)
             {
@@ -602,6 +615,7 @@ void excluirAvaliacao(listaAluno l)
         printf("\nDigite a MATRICULA do Aluno ao qual deseja EXCLUIR uma avaliação: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
+        format_string(a.matricula);
         
         posicaoA = (pesquisaMatricula(l,a.matricula));
         
@@ -612,6 +626,7 @@ void excluirAvaliacao(listaAluno l)
             printf("\nDigite o NOME da disciplina da avaliacao: ");
             fgets(d.nomeDisciplina,sizeof(d.nomeDisciplina),stdin);
             check_newline(d.nomeDisciplina);
+            format_string(d.nomeDisciplina);
 
             posicaoD = pesquisaDisciplina(nA->L_Disc,d.nomeDisciplina);
 
@@ -622,6 +637,7 @@ void excluirAvaliacao(listaAluno l)
                 printf("\nDigite o NOME da avaliação a ser excluida: ");
                 fgets(av.nomeAvaliacao,sizeof(av.nomeAvaliacao),stdin);
                 check_newline(av.nomeAvaliacao);
+                format_string(av.nomeAvaliacao);
 
                 if(pesquisaAvaliacao(nD->L_Ava,av.nomeAvaliacao)!=0)
                 {
@@ -660,6 +676,7 @@ void alterarNota(listaAluno l)
         printf("\nDigite a MATRICULA do Aluno ao qual deseja alterar a nota de uma avaliação: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
+        format_string(a.matricula);
         
         posicaoA = (pesquisaMatricula(l,a.matricula));
 
@@ -670,6 +687,7 @@ void alterarNota(listaAluno l)
             printf("\nDigite o NOME da disciplina da avaliacao: ");
             fgets(d.nomeDisciplina,sizeof(d.nomeDisciplina),stdin);
             check_newline(d.nomeDisciplina);
+            format_string(d.nomeDisciplina);
 
             posicaoD = pesquisaDisciplina(nA->L_Disc,d.nomeDisciplina);
 
@@ -680,15 +698,21 @@ void alterarNota(listaAluno l)
                 printf("\nDigite o NOME da avaliação: ");
                 fgets(av.nomeAvaliacao,sizeof(av.nomeAvaliacao),stdin);
                 check_newline(av.nomeAvaliacao);
+                format_string(av.nomeAvaliacao);
 
                 posicaoAv = pesquisaAvaliacao(nD->L_Ava,av.nomeAvaliacao);
 
                 if (posicaoAv!=0)
                 {
                     getElementoAvaliacao(nD->L_Ava,posicaoAv,&nAv);
-                    printf("\nDigite a nova nota: ");
-                    scanf("%d",&nAv->info.nota);
-                    setbuf(stdin,NULL);
+                    do
+                    {
+                        printf("\nDigite a nova nota: ");
+                        scanf("%d",&nAv->info.nota);
+                        setbuf(stdin,NULL);
+                        if(nAv->info.nota > nAv->info.valor)
+                            printf("\nA nota do aluno não pode ser maior que o valor da avaliação (%d)...",nAv->info.valor);
+                    }while(nAv->info.nota > nAv->info.valor);
                     printf("\nNota Alterada com sucesso.");
                 }
                 else
