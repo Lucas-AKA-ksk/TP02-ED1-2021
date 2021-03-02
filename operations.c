@@ -255,10 +255,10 @@ void save_to_file(FILE *arq, listaAluno l)
             nA = nA->next;
             fprintf(arq,"\n");
         }
-        printf("\nDados salvod com sucesso.");
+        printf("\nDados salvos com sucesso.");
     }
     else
-        printf("\nNão é possivel salvar uma lista vazia ou com erros de integridade...");
+        printf("\nNao e possivel salvar uma lista vazia ou com erros de integridade...");
 }
 
 /* Função auxiliar de save_to_file() que percorre a lista de disciplinas de um aluno para salvar as infos */
@@ -317,9 +317,9 @@ void cadastroAluno(listaAluno l)
                 printf("\nFalha ao cadastrar aluno...");
         }
         else
-            printf("\nA matricula %s já foi cadastrada...",a.matricula);
+            printf("\nA matricula %s ja foi cadastrada...",a.matricula);
         
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);
@@ -357,12 +357,12 @@ void cadastroDisciplina(listaAluno l)
                     printf("\nFalha ao cadastrar disciplina...");
             }
             else
-                printf("\nEsta Disciplina já foi cadastrada para o Aluno %s",n->info.nome);
+                printf("\nEsta Disciplina ja foi cadastrada para o Aluno %s",n->info.nome);
         }
         else
-            printf("\nAluno não cadastrado...");
+            printf("\nAluno nao encontrado...");
 
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);
@@ -401,33 +401,33 @@ void cadastroAvaliacao(listaAluno l)
             {
                 getElementoDisciplina(nA->L_Disc,posicaoD,&nD);
 
-                printf("\nDigite o NOME da avaliação: ");
+                printf("\nDigite o NOME da avaliacao: ");
                 fgets(av.nomeAvaliacao,sizeof(av.nomeAvaliacao),stdin);
                 check_newline(av.nomeAvaliacao);
                 format_string(av.nomeAvaliacao);
-                printf("\nDigite o VALOR da avaliação: ");
+                printf("\nDigite o VALOR da avaliacao: ");
                 scanf("%d",&av.valor);
                 setbuf(stdin,NULL);
                 do{
-                    printf("\nDigite a NOTA do aluno nesta avaliação: ");
+                    printf("\nDigite a NOTA do aluno nesta avaliacao: ");
                     scanf("%d",&av.nota);
                     setbuf(stdin,NULL);
                     if (av.nota>av.valor)
-                        printf("\nA nota do aluno não pode ser maior que o valor da avaliação...");
+                        printf("\nA nota do aluno nao pode ser maior que o valor da avaliacao...");
                 }while (av.nota>av.valor);
 
                 if (insereFinalAvaliacao(nD->L_Ava,av))
-                    printf("\nAvaliação cadastrada com com sucesso.");
+                    printf("\nAvaliacao cadastrada com com sucesso.");
                 else
-                    printf("\nFalha ao cadastrar avaliação...");
+                    printf("\nFalha ao cadastrar avaliacao...");
             }
             else
-                printf("\nDisciplina não cadastrada...");
+                printf("\nDisciplina não encontrada...");
         }
         else
-            printf("\nAluno não cadastrado...");
+            printf("\nAluno não encontrado...");
 
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);
@@ -456,9 +456,9 @@ void consultaMatricula(listaAluno l)
             listarDisc(nA->L_Disc);
         }
         else
-            printf("\nA matricula fornecida não corresponde a nenhum cadastro.");
+            printf("\nA matricula fornecida nao corresponde a nenhum cadastro.");
         
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);
@@ -496,7 +496,7 @@ void consultaPrefixo(listaAluno l)
             nA = nA->next;
         }
         printf("\nForam encontrados %d matches para o prefixo fornecido",matches);
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);
@@ -526,7 +526,7 @@ void listarAval(listaAvaliacao l)
     TNodoAvaliacao *nAv;
 
     nAv = l->first;
-    printf("\n\n######~ Avaliações da Disciplina ~######");
+    printf("\n\n######~ Avaliacoes da Disciplina ~######");
     while (nAv)
     {
         printf("\n####~ Nome da Aval.: %s\n####~ Valor: %d\n####~ Nota: %d\n",nAv->info.nomeAvaliacao,nAv->info.valor,nAv->info.nota);
@@ -549,12 +549,12 @@ void excluirAluno(listaAluno l)
         if(pesquisaMatricula(l,a.matricula)!=0)
         {
             removeElementoAluno(l,a.matricula);
-            printf("\nTodas as informações do aluno de matricula \"%s\" foram excluidas, incluindo disciplinas, avaliações e notas.",a.matricula);
+            printf("\nTodas as informacoes do aluno de matricula \"%s\" foram excluidas, incluindo disciplinas, avaliacoes e notas.",a.matricula);
         }
         else
-            printf("\nA matricula fornecida mão está cadastrada...");
+            printf("\nA matricula fornecida nao está cadastrada...");
         
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);
@@ -588,15 +588,15 @@ void excluirDisciplina(listaAluno l)
             if(pesquisaDisciplina(n->L_Disc,d.nomeDisciplina)!=0)
             {
                 removeElementoDisciplina(n->L_Disc,d.nomeDisciplina);
-                printf("\nA disciplina \"%s\", suas avaliações e notas foram removidas do cadastro do aluno %s.",d.nomeDisciplina,n->info.nome);
+                printf("\nA disciplina \"%s\", suas avaliacoes e notas foram removidas do cadastro do aluno %s.",d.nomeDisciplina,n->info.nome);
             }
             else
-                printf("\nDisciplina fornecida não está cadastrada no aluno %s...",n->info.nome);
+                printf("\nA Disciplina fornecida nao esta cadastrada no aluno %s...",n->info.nome);
         }
         else
-            printf("\nA Matricula \"%s\" não corresponde a nenhum cadastro...",a.matricula);
+            printf("\nA Matricula \"%s\" nao corresponde a nenhum cadastro...",a.matricula);
 
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);
@@ -613,7 +613,7 @@ void excluirAvaliacao(listaAluno l)
     int sair, posicaoA, posicaoD;
     do
     {
-        printf("\nDigite a MATRICULA do Aluno ao qual deseja EXCLUIR uma avaliação: ");
+        printf("\nDigite a MATRICULA do Aluno ao qual deseja EXCLUIR uma avaliacao: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
         format_string(a.matricula);
@@ -635,7 +635,7 @@ void excluirAvaliacao(listaAluno l)
             {
                 getElementoDisciplina(nA->L_Disc,posicaoD,&nD);
 
-                printf("\nDigite o NOME da avaliação a ser excluida: ");
+                printf("\nDigite o NOME da avaliacao a ser excluida: ");
                 fgets(av.nomeAvaliacao,sizeof(av.nomeAvaliacao),stdin);
                 check_newline(av.nomeAvaliacao);
                 format_string(av.nomeAvaliacao);
@@ -643,19 +643,19 @@ void excluirAvaliacao(listaAluno l)
                 if(pesquisaAvaliacao(nD->L_Ava,av.nomeAvaliacao)!=0)
                 {
                     removeElementoAvaliacao(nD->L_Ava,av.nomeAvaliacao);
-                    printf("\nA avaliação \"%s\" da disciplina \"%s\" do aluno %s foi excluida.",av.nomeAvaliacao,d.nomeDisciplina,nA->info.nome);
+                    printf("\nA avaliacao \"%s\" da disciplina \"%s\" do aluno %s foi excluida.",av.nomeAvaliacao,d.nomeDisciplina,nA->info.nome);
                 }
                 else
-                    printf("\nA avaliação \"%s\" não corresponde a nenhuma avaliação cadastrada...",av.nomeAvaliacao);
+                    printf("\nA avaliacao \"%s\" nao corresponde a nenhuma avaliacao cadastrada...",av.nomeAvaliacao);
 
             }
             else
-                printf("\nDisciplina fornecida não está cadastrada no aluno %s...",nA->info.nome);
+                printf("\nDisciplina fornecida nao esta cadastrada no aluno %s...",nA->info.nome);
         }
         else
-            printf("\nA Matricula \"%s\" não corresponde a nenhum cadastro...",a.matricula);
+            printf("\nA Matricula \"%s\" nao corresponde a nenhum cadastro...",a.matricula);
 
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);
@@ -674,7 +674,7 @@ void alterarNota(listaAluno l)
 
     do
     {
-        printf("\nDigite a MATRICULA do Aluno ao qual deseja alterar a nota de uma avaliação: ");
+        printf("\nDigite a MATRICULA do Aluno ao qual deseja alterar a nota de uma avaliacao: ");
         fgets(a.matricula,sizeof(a.matricula),stdin);
         check_newline(a.matricula);
         format_string(a.matricula);
@@ -696,7 +696,7 @@ void alterarNota(listaAluno l)
             {
                 getElementoDisciplina(nA->L_Disc,posicaoD,&nD);
 
-                printf("\nDigite o NOME da avaliação: ");
+                printf("\nDigite o NOME da avaliacao: ");
                 fgets(av.nomeAvaliacao,sizeof(av.nomeAvaliacao),stdin);
                 check_newline(av.nomeAvaliacao);
                 format_string(av.nomeAvaliacao);
@@ -712,21 +712,21 @@ void alterarNota(listaAluno l)
                         scanf("%d",&nAv->info.nota);
                         setbuf(stdin,NULL);
                         if(nAv->info.nota > nAv->info.valor)
-                            printf("\nA nota do aluno não pode ser maior que o valor da avaliação (%d)...",nAv->info.valor);
+                            printf("\nA nota do aluno nao pode ser maior que o valor da avaliacao (%d)...",nAv->info.valor);
                     }while(nAv->info.nota > nAv->info.valor);
                     printf("\nNota Alterada com sucesso.");
                 }
                 else
-                    printf("\nA avaliação \"%s\" não corresponde a nenhuma avaliação cadastrada...",av.nomeAvaliacao);
+                    printf("\nA avaliacao \"%s\" nao corresponde a nenhuma avaliacao cadastrada...",av.nomeAvaliacao);
                 
             }
             else
-                printf("\nDisciplina fornecida não está cadastrada no aluno %s...",nA->info.nome);
+                printf("\nDisciplina fornecida não esta cadastrada no aluno %s...",nA->info.nome);
             
         }
         else
-            printf("\nA Matricula \"%s\" não corresponde a nenhum cadastro...",a.matricula);
-        printf("\nDeseja Repetir esta operação??  1->SIM 2->NÃO \nEscolha: ");
+            printf("\nA Matricula \"%s\" nao corresponde a nenhum cadastro...",a.matricula);
+        printf("\nDeseja Repetir esta operacao??  1->SIM 2->NAO \nEscolha: ");
         scanf("%d",&sair);
         setbuf(stdin,NULL);
     } while (sair!=2);  
@@ -774,7 +774,7 @@ void relatorioAprov(listaAluno l)
                 media += nota;
                 nD = nD->next;
             }
-            printf("\nMédia: %d",media/nA->L_Disc->tamanho);
+            printf("\nMedia: %d",media/nA->L_Disc->tamanho);
         }
         nA = nA->next;
     }
@@ -822,7 +822,7 @@ void relatorioReprov(listaAluno l)
                 media += nota;
                 nD = nD->next;
             }
-            printf("\nMédia: %d",media/nA->L_Disc->tamanho);
+            printf("\nMedia: %d",media/nA->L_Disc->tamanho);
         }
         nA = nA->next;
     }
