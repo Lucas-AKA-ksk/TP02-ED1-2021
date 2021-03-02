@@ -33,6 +33,16 @@ void check_newline(char *s)
         newline_remover(s);
 }
 
+/* Transforma todos os caracteres da string 's' em uppercase */
+void format_string(char *s)
+{
+    int i;
+    for (i = 0; i < strlen(s); i++)
+    {
+        s[i]=toupper(s[i]);
+    }
+}
+
 /* Verifica se uma data é válida */
 int verify_date(char *data)
 {
