@@ -7,7 +7,7 @@
 
 /* Lê as informações salvas em um arquivo e as armazena
  na lista l de acordo com os characteres separadores (#,@,"\n"),
- espera-se que o arquivo estaja sem erros na hora da leitura */
+ espera-se que o arquivo esteja sem erros na hora da leitura */
 void file_parser(FILE *arq, listaAluno l)
 {
     /* flagNodo e flagCampo representam em qual campo de qual nodo o char
