@@ -32,11 +32,11 @@ void menu(FILE* arq, listaAluno l)
         printf("\n\n##########~ Menu de Operacoes ~##########");
         printf("\n###~ 1->Cadastros ~######################");
         printf("\n###~ 2->Consultas ~######################");
-        printf("\n###~ 3->Exclusões ~######################");
+        printf("\n###~ 3->Exclusoes ~######################");
         printf("\n###~ 4->Alterar notas ~##################");
         printf("\n###~ 5->Verificar integridade ~##########");
-        printf("\n###~ 6->Releatórios ~####################");
-        printf("\n###~ 7->Gravar alterações ~##############");
+        printf("\n###~ 6->Releatorios ~####################");
+        printf("\n###~ 7->Gravar alteracoes ~##############");
         printf("\n###~ 0->Fechar Programa ~################");
         printf("\n\nEscolha: ");
         scanf("%d",&option);
@@ -54,7 +54,7 @@ void menu(FILE* arq, listaAluno l)
                 printf("\n\n############~ Submenu de Cadastros ~############");
                 printf("\n###~ 1->Cadastro de aluno ~#####################");
                 printf("\n###~ 2->Cadastro de Disciplina ~################");
-                printf("\n###~ 3->Cadastro de avaliação ~#################");
+                printf("\n###~ 3->Cadastro de avaliacao ~#################");
                 printf("\n###~ 0->Retornar ao Menu Principal ~############");
                 printf("\n\nEscolha: ");
                 scanf("%d",&subOption);
@@ -78,7 +78,7 @@ void menu(FILE* arq, listaAluno l)
                     break;
 
                 default:
-                    printf("\nDigite um valor valido para relizar uma operação...");
+                    printf("\nDigite um valor valido para relizar uma operacao...");
                     break;
                 }
 
@@ -121,10 +121,10 @@ void menu(FILE* arq, listaAluno l)
         case 3:
             do
             {
-                printf("\n\n############~ Submenu de Exclusões ~############");
-                printf("\n###~ 1->Exclusão de aluno ~#####################");
-                printf("\n###~ 2->Exclusão de Disciplina ~################");
-                printf("\n###~ 3->Exclusão de avaliação ~#################");
+                printf("\n\n############~ Submenu de Exclusoes ~############");
+                printf("\n###~ 1->Exclusao de aluno ~#####################");
+                printf("\n###~ 2->Exclusao de Disciplina ~################");
+                printf("\n###~ 3->Exclusao de avaliacao ~#################");
                 printf("\n###~ 0->Retornar ao Menu Principal ~############");
                 printf("\n\nEscolha: ");
                 scanf("%d",&subOption);
@@ -148,7 +148,7 @@ void menu(FILE* arq, listaAluno l)
                     break;
 
                 default:
-                    printf("\nDigite um valor valido para relizar uma operação...");
+                    printf("\nDigite um valor valido para relizar uma operacao...");
                     break;
                 }
 
@@ -191,7 +191,7 @@ void menu(FILE* arq, listaAluno l)
                     break;
 
                 default:
-                    printf("\nDigite um valor valido para relizar uma operação...");
+                    printf("\nDigite um valor valido para relizar uma operacao...");
                     break;
                 }
 
@@ -203,7 +203,7 @@ void menu(FILE* arq, listaAluno l)
             break;
 
         default:
-            printf("\nDigite um valor valido para relizar uma operação...");
+            printf("\nDigite um valor valido para relizar uma operacao...");
             break;
         }
         
